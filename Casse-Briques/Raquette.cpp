@@ -5,7 +5,7 @@
 Raquette::Raquette()
 {
 	sf::Vector2f size(larg, haut);
-	raquette = sf::RectangleShape(size);
+	raquette.setSize(size);
 	raquette.setFillColor(sf::Color::Cyan);
 }
 

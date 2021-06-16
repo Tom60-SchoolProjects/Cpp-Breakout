@@ -6,7 +6,7 @@
 
 Balle::Balle()
 {
-	balle = sf::CircleShape(larg);
+	balle.setRadius(larg);
 	balle.setFillColor(sf::Color::Red);
 }
 
@@ -140,11 +140,11 @@ void Balle::rebondir_r(Raquette r)
 		switch (dir)
 		{
 		case Direction::SudEst:
-			dir = Direction::NordOuest;
+			dir = Direction::NordEst;
 			break;
 
 		case Direction::SudOuest:
-			dir = Direction::NordEst;
+			dir = Direction::NordOuest;
 			break;
 		}
 	}

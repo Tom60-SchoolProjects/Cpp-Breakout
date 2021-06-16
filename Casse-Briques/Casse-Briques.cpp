@@ -12,7 +12,7 @@ Balle balle;
 Raquette raquette;
 Brique briques[40];
 sf::RenderWindow window(sf::VideoMode(420, 420), "Casse-Briques");
-sf::RectangleShape mur({ Mur::xMax,Mur::yMax + 20 });
+sf::RectangleShape mur({ Mur::xMax, Mur::yMax + 20 });
 sf::Text pauseText;
 
 void init()
@@ -21,16 +21,24 @@ void init()
 	mur.setFillColor(sf::Color(213, 213, 213));
 	mur.setPosition(Mur::xMin, Mur::yMin);
 
+	// Bricks init
+	int i = 0;
+	for (int l = 0; l < 5; l++)
+		for (int c = 0; c < 8; c++)
+		{
+			briques[i].setPosition(Mur::xMin * 2 + l * Brique::larg + 80, Mur::yMin * 2 + c * Brique::haut + 10);
+			i++;
+		}
+
 	// Pause text init
 	pauseText.setFillColor(sf::Color(13, 13, 13));
 	sf::Font font;
-#if defined(_WIN32)
-	if (!font.loadFromFile("C:/Windows/Fonts/arial.ttf"))
-	{
+
+	// Ne fonctionne pas
+	/*if (!font.loadFromFile("Fonts/arial.ttf")) // 
 		return;
-	}
-#endif
-	pauseText.setFont(font);
+
+	pauseText.setFont(font);*/
 	pauseText.setCharacterSize(24);
 	pauseText.setString("Press space to start");
 	sf::FloatRect bounds = pauseText.getGlobalBounds();
@@ -75,14 +83,20 @@ void update()
 
 		// si win
 
+
 		balle.maj();
 		raquette.maj();
 	}
 
 	window.clear(sf::Color::White);
+
 	window.draw(mur);
 	window.draw(balle.getShape());
 	window.draw(raquette.getShape());
+	for (int i = 0; i < 40; i++)
+		if (!briques[i].breaked)
+			window.draw(briques[i].getShape());
+
 	if (pause)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
