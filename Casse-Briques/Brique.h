@@ -6,14 +6,12 @@ class Brique
 {
 public:
 	static const int larg = 38, haut = 15;
-
-	//Brique();
+	
 	Brique(int, int, sf::Color);
 
 	int getPosX();
 	int getPosY();
 	sf::RectangleShape getShape();
-	//void init(int, int, sf::Color);
 	void _break();
 	bool isBreaked();
 	void reset();
