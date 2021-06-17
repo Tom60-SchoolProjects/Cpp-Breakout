@@ -130,55 +130,6 @@ void Balle::rebondir_br(Brique& br)
 			break;
 		}
 	}
-
-	/*if (0 < posX + larg * 2 - br.getPosX() && posX - br.getPosX() < br.larg &&
-		0 < posY + larg * 2 - br.getPosY() && posY - br.getPosY() < br.haut)
-	{
-		br._break();
-
-		if (0 < posX - larg - br.getPosX() && posX - br.getPosX() < br.larg)
-		{
-			switch (dir)
-			{
-			case Direction::NordEst:
-				dir = Direction::SudEst;
-				break;
-
-			case Direction::NordOuest:
-				dir = Direction::SudOuest;
-				break;
-
-			case Direction::SudEst:
-				dir = Direction::NordEst;
-				break;
-
-			case Direction::SudOuest:
-				dir = Direction::NordOuest;
-				break;
-			}
-		}
-		else
-		{
-			switch (dir)
-			{
-			case Direction::NordEst:
-				dir = Direction::NordOuest;
-				break;
-
-			case Direction::NordOuest:
-				dir = Direction::NordEst;
-				break;
-
-			case Direction::SudEst:
-				dir = Direction::SudOuest;
-				break;
-
-			case Direction::SudOuest:
-				dir = Direction::SudEst;
-				break;
-			}
-		}
-	}*/
 }
 
 void Balle::rebondir_m()
@@ -200,15 +151,11 @@ void Balle::rebondir_m()
 		break;
 
 	case Direction::SudEst:
-		/*if (posY >= Mur::yMax) // Sud
-			dir = Direction::NordEst;*/
 		if (posX >= Mur::xMax) // Est
 			dir = Direction::SudOuest;
 		break;
 
 	case Direction::SudOuest:
-		/*if (posY >= Mur::yMax) // Sud
-			dir = Direction::NordOuest;*/
 		if (posX <= Mur::xMin) // Ouest
 			dir = Direction::SudEst;
 		break;
