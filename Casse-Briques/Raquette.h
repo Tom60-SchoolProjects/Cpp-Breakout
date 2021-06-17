@@ -6,8 +6,7 @@
 class Raquette
 {
 public:
-	const int larg = 100;
-	const int haut = 10;
+	const int larg = 100, haut = 10, vitesse = 2;
 
 	Raquette();
 
@@ -20,7 +19,6 @@ public:
 	void droite();
 
 private:
-	int posX;
-	int posY;
+	int posX, posY;
 	sf::RectangleShape raquette;
 };

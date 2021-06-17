@@ -27,9 +27,6 @@
     <ClCompile Include="Brique.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Affichage.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="Mur.h">
       <Filter>Fichiers sources</Filter>
     </ClCompile>

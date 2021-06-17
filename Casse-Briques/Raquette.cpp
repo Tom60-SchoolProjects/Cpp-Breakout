@@ -39,11 +39,11 @@ void Raquette::maj()
 void Raquette::gauche()
 {
 	if (posX != Mur::xMin)
-		posX--;
+		posX -= vitesse;
 }
 
 void Raquette::droite()
 {
 	if (posX + larg != Mur::xMin + Mur::xMax)
-		posX++;
+		posX += vitesse;
 }

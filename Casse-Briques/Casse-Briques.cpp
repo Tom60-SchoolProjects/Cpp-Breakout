@@ -1,16 +1,15 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <windows.h>
 #include "Balle.h"
 #include "Raquette.h"
 #include "Brique.h"
 #include "Mur.h"
 
-bool lose;
-bool win;
 bool pause;
 Balle balle;
 Raquette raquette;
-Brique briques[40];
+Brique* briques[40];
 sf::RenderWindow window(sf::VideoMode(420, 420), "Casse-Briques");
 sf::RectangleShape mur({ Mur::xMax, Mur::yMax + 20 });
 sf::Text pauseText;
@@ -26,7 +25,10 @@ void init()
 	for (int l = 0; l < 5; l++)
 		for (int c = 0; c < 8; c++)
 		{
-			briques[i].setPosition(Mur::xMin * 2 + l * Brique::larg + 80, Mur::yMin * 2 + c * Brique::haut + 10);
+			briques[i] = new Brique(
+				Mur::xMin * 2 + c * (Brique::larg + 5),
+				Mur::yMin * 2 + l * (Brique::haut + 5),
+				sf::Color(20, 200 + l * 10, 20));
 			i++;
 		}
 
@@ -49,7 +51,7 @@ void newGame()
 {
 	// Reset all bricks
 	for (int i = 0; i < 40; i++)
-		briques[i].reset();
+		briques[i]->reset();
 
 	// Pause to let the player be ready
 	pause = true;
@@ -62,40 +64,83 @@ void newGame()
 	raquette.setPosition(Mur::xMin + Mur::xMax / 2 - raquette.larg / 2, Mur::yMax);
 }
 
+bool hasLose()
+{
+	return balle.getPosY() >= Mur::yMax;
+}
+
+bool hasWon()
+{
+	int brickRamaning = 0;
+
+	for (int i = 0; i < 40; i++)
+		if (!briques[i]->isBreaked())
+			brickRamaning++;
+
+	return brickRamaning == 0;
+}
+
 void update()
 {
 	if (!pause)
 	{
+		// Input handler
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			raquette.gauche();
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			raquette.droite();
 
-		// si lose
+		// Win/Lose
+		if (hasLose())
+		{
+			int msgboxID = MessageBox(NULL, (LPCWSTR)L"Try again?", (LPCWSTR)L"You lose!", MB_ICONASTERISK | MB_YESNO);
 
-		// si bal t b
+			switch (msgboxID)
+			{
+			case IDYES:
+				newGame();
+				break;
+			case IDNO:
+				window.close();
+				break;
+			}
+		}
 
-		// si bal t m
+		if (hasWon())
+		{
+			int msgboxID = MessageBox(NULL, (LPCWSTR)L"Try again?", (LPCWSTR)L"You won!", MB_ICONASTERISK | MB_YESNO);
+
+			switch (msgboxID)
+			{
+			case IDYES:
+				newGame();
+				break;
+			case IDNO:
+				window.close();
+				break;
+			}
+		}
+
+		// Ball colider
+		for (int i = 0; i < 40; i++)
+			balle.rebondir_br(*briques[i]);
 		balle.rebondir_m();
-
-		// si bal t r
 		balle.rebondir_r(raquette);
 
-		// si win
-
-
+		// Update
 		balle.maj();
 		raquette.maj();
 	}
 
+	// Draw handle
 	window.clear(sf::Color::White);
 
 	window.draw(mur);
 	window.draw(balle.getShape());
 	window.draw(raquette.getShape());
 	for (int i = 0; i < 40; i++)
-		if (!briques[i].breaked)
-			window.draw(briques[i].getShape());
+		if (!briques[i]->isBreaked())
+			window.draw(briques[i]->getShape());
 
 	if (pause)
 	{
